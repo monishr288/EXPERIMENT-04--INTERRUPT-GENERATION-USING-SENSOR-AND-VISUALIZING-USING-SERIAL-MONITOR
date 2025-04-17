@@ -1,10 +1,10 @@
 # EXPERIMENT-04-INTERRUPT-GENERATION-USING-SENSOR-AND-VISUALIZING-USING-SERIAL-MONITOR
 
-###  DATE: 
+###  DATE: 17.04.2025
 
-###  NAME: 
-###  ROLL NO :
-###  DEPARTMENT: 
+###  NAME: R MONISH
+###  ROLL NO : 212223220061
+###  DEPARTMENT: IT
 ### Aim:
 To Interface a IR Sensor to digital port of iot development board  and generate an interrupt and visualize on the serial monitor 
 
@@ -125,13 +125,90 @@ The diagram below shows how the GPIO pins are connected to the 16 interrupt line
  
 
 ## STM 32 CUBE PROGRAM :
+```/* USER CODE BEGIN Header / /*
+
+@file : main.c
+@brief : Main program body
+@attention
+© Copyright (c) 2025 STMicroelectronics.
+All rights reserved.
+This software component is licensed by ST under BSD 3-Clause license,
+the "License"; You may not use this file except in compliance with the
+License. You may obtain a copy of the License at:
+```
+```
+#include "main.h"
+#include "stdio.h"
+#if defined (_ICCARM_) || defined (_ARMCC_VERSION)
+#define PUTCHAR_PROTOTYPE int fputc(int ch,FILE *f);
+#elif defined(_GNUC_)
+#define PUTCHAR_PROTOTYPE int __io_putchar(int ch)
+#endif
+
+
+
+int main(void)
+{
+
+HAL_Init();
+
+
+SystemClock_Config();
+
+
+MX_GPIO_Init();
+MX_USART2_UART_Init();
+
+while (1)
+{
+
+}
+while(1){
+    if(interrupt_triggered){
+        printf("INTERRUPT GENERATED\n");
+        HAL_Delay(100);  // Delay here is safe
+        interrupt_triggered = 0;
+    }
+}
+/* USER CODE END 3 */
+}
+
+
+//void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+//	if(HAL_GPIO_ReadPin(GPIOA,GPIO_PIN_4)==0){
+//		printf("INTERRUPT GENERATED\n");
+//		HAL_Delay(100);
+//	}else{
+//		printf("INTERRUPT NOT GENERATED\n");
+//		HAL_Delay(100);
+//	}
+//}
+
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin){
+  if(GPIO_Pin == GPIO_PIN_4){
+      if(HAL_GPIO_ReadPin(GPIOA, GPIO_PIN_4) == 0){
+          interrupt_triggered = 1;
+      }
+  }
+}
+
+PUTCHAR_PROTOTYPE {
+  HAL_UART_Transmit(&huart2,(uint8_t*)&ch,1,0xFFFF);
+  return ch;
+}
+```
 
 
 
 ## Output screen shots of serial port utility   :
+![WhatsApp Image 2025-04-17 at 10 39 17_a7fcb432](https://github.com/user-attachments/assets/e28f6e4c-02be-4905-b7e3-568b66076870)
+
+
  
  
  ## Circuit board :
+![WhatsApp Image 2025-04-17 at 10 38 15_8b07ae41](https://github.com/user-attachments/assets/8c91d565-868a-43de-8464-9d1947d0db70)
+
  
  
  
